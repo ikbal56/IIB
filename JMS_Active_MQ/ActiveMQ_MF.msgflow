@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmJMSClientInput.msgnode="ComIbmJMSClientInput.msgnode" xmlns:ComIbmJMSClientOutput.msgnode="ComIbmJMSClientOutput.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="ActiveMQ_MF.msgflow" nsPrefix="ActiveMQ_MF.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="ActiveMQ_MF" bundleName="ActiveMQ_MF" pluginId="JMS_Active_MQ"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/JMS_Active_MQ/icons/full/obj16/ActiveMQ_MF.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/JMS_Active_MQ/icons/full/obj30/ActiveMQ_MF.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="488,87" jmsProviderName="activeMQ" initialContextFactory="org.apache.activemq.jndi.ActiveMQInitialContextFactory" locationJndiBindings="file:/C:/Users/Sreenivas Bandaru/Pictures/JMS_ACTIVEMQ/" connectionFactoryName="connectionfactory">
+        <translation xmi:type="utility:ConstantString" string="JMS Output"/>
+      </nodes>
+      <nodes xmi:type="ComIbmJMSClientInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="65,87" locationJndiBindings="file:/C:/Users/Sreenivas Bandaru/Pictures/JMS_ACTIVEMQ/" messageDomainProperty="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="JMS Input"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>
