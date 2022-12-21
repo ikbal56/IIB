@@ -1,0 +1,48 @@
+
+
+CREATE COMPUTE MODULE Exception_Handling_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+		DECLARE excep_number INTEGER ;
+		DECLARE excep_Name CHARACTER ;
+		DECLARE Bip CHARACTER ;
+		DECLARE app_name CHARACTER;
+		DECLARE msg_flow CHARACTER;
+	
+		
+		
+
+		DECLARE ref REFERENCE TO InputExceptionList.*[1];
+		
+		WHILE ref.Number is NOT NULL DO
+
+			SET OutputRoot.XMLNSC.Exception.app_name=ApplicationLabel;
+			SET OutputRoot.XMLNSC.Exception.excep_number= ref.Number;
+			SET OutputRoot.XMLNSC.Exception.excep_Name= ref.Text;
+			SET OutputRoot.XMLNSC.Exception.Bip= ref.Catalog;
+			
+
+			SET app_name=ApplicationLabel;
+			SET excep_number= ref.Number;
+			SET excep_Name= ref.Text;
+			SET Bip= ref.Catalog;
+			SET msg_flow=MessageFlowLabel;
+			
+			
+			
+			
+			MOVE ref LASTCHILD;
+		END WHILE;
+
+		CALL excep_proce (app_name,excep_number,excep_Name,Bip,CURRENT_TIMESTAMP,msg_flow);
+		
+		RETURN TRUE;
+	END;
+
+	
+END MODULE;
+CREATE PROCEDURE excep_proce (IN app_name CHARACTER,IN excep_number INTEGER,IN exce_name CHARACTER,IN bip CHARACTER,IN time_stamp TIMESTAMP,IN MSGFLOW_NAME CHARACTER)
+LANGUAGE DATABASE
+EXTERNAL NAME "DB_LOG_PROCEDURE" ;

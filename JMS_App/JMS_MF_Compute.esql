@@ -1,0 +1,48 @@
+
+DECLARE msgid SHARED INTEGER 1;
+CREATE COMPUTE MODULE JMS_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		SET OutputRoot.JSON.Data.Result = InputRoot.XMLNSC;
+		
+		DECLARE app_name,msg_id,msgflow_name,msg_type,channel_req,channel_resp CHARACTER;
+			
+	    DECLARE timestamp_req,timestamp_resp TIMESTAMP;
+		
+		DECLARE var REFERENCE TO InputRoot.XMLNSC;
+		DECLARE var2 REFERENCE TO OutputRoot.XMLNSC;
+		
+		
+		SET app_name=ApplicationLabel;
+		SET msg_type='XMLNSC';
+		--SET channel_req=var;
+		
+		SET channel_req = CAST(ASBITSTREAM(var CCSID 1208) as CHARACTER ENCODING InputRoot.Properties.Encoding) ;
+		SET channel_resp = CAST(ASBITSTREAM(var2 CCSID 1208) as CHARACTER ENCODING InputRoot.Properties.Encoding) ;
+		
+		SET msgflow_name=MessageFlowLabel;
+		
+		SET msg_id= msgid ;
+	    SET msgid=msgid+1;
+	    SET timestamp_req = CURRENT_TIMESTAMP;
+	    	
+	   SET timestamp_resp = CURRENT_TIMESTAMP;
+		
+		--SET channel_resp=var2;	
+
+	 
+	 
+         CALL db_log_jms(app_name,msg_id,msg_type,channel_req,channel_resp,msgflow_name,timestamp_req,timestamp_resp);
+
+
+  
+RETURN TRUE;
+	END;
+
+	
+END MODULE;
+
+CREATE PROCEDURE db_log_jms(IN app_name CHARACTER,IN MSG_ID CHARACTER,IN MSG_TYPE CHARACTER,IN CHANNEL_REQ CHARACTER,IN CHANNEL_RESP CHARACTER,IN MSGFLOW_NAME CHARACTER,IN REQ_TIMESTAMP TIMESTAMP,IN RESP_TIMESTAMP TIMESTAMP)
+LANGUAGE DATABASE
+EXTERNAL NAME DB_LOG_JMS_PROCEDURE;
