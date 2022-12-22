@@ -1,0 +1,35 @@
+
+
+CREATE COMPUTE MODULE getFetchmyData_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		
+		
+		DECLARE Cus_ID CHARACTER;
+		DECLARE CustomerDetails ROW;
+		
+		SET Cus_ID ='SELECT * FROM CUSTOMER WHERE ID = 103';
+		SET OutputRoot.JSON.Data.FetchOutput.CustomerDetails = PASSTHRU(Cus_ID TO Database.DBCON);
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		
+		
+	END;
+END MODULE;
+
+

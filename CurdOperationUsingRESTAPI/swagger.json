@@ -1,0 +1,172 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "CurdOperationUsingRESTAPI",
+    "version" : "1.0.0",
+    "description" : "CurdOperationUsingRESTAPI"
+  },
+  "paths" : {
+    "/addData" : {
+      "post" : {
+        "operationId" : "postAddData",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/C_Output"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a addData",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/C_Input"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/updateDetails" : {
+      "put" : {
+        "operationId" : "putUpdateDetails",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/updateOutput"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Update updateDetails",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/updateInput"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/deleteData" : {
+      "delete" : {
+        "operationId" : "deleteDeleteData",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/deleteOutput"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Remove from deleteData"
+      }
+    },
+    "/fetchmyData" : {
+      "get" : {
+        "operationId" : "getFetchmyData",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "$ref" : "#/definitions/FetchOutput"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Retrieve fetchmyData"
+      }
+    }
+  },
+  "basePath" : "/curdoperationusingrestapi/v1",
+  "definitions" : {
+    "C_Input" : {
+      "type" : "object",
+      "properties" : {
+        "ID" : {
+          "type" : "string"
+        },
+        "NAME" : {
+          "type" : "string"
+        },
+        "CITY" : {
+          "type" : "string"
+        }
+      }
+    },
+    "C_Output" : {
+      "type" : "object",
+      "properties" : {
+        "Result" : {
+          "type" : "string"
+        }
+      }
+    },
+    "updateInput" : {
+      "type" : "object",
+      "properties" : {
+        "ID" : {
+          "type" : "string"
+        },
+        "NAME" : {
+          "type" : "string"
+        }
+      }
+    },
+    "updateOutput" : {
+      "type" : "object",
+      "properties" : {
+        "Result1" : {
+          "type" : "string"
+        }
+      }
+    },
+    "deleteInput" : {
+      "type" : "object",
+      "properties" : {
+        "ID" : {
+          "type" : "string"
+        }
+      }
+    },
+    "deleteOutput" : {
+      "type" : "object",
+      "properties" : {
+        "Result2" : {
+          "type" : "string"
+        }
+      }
+    },
+    "FetchInput" : {
+      "type" : "object",
+      "properties" : {
+        "ID" : {
+          "type" : "string"
+        }
+      }
+    },
+    "FetchOutput" : {
+      "type" : "object",
+      "properties" : {
+        "ID" : {
+          "type" : "string"
+        },
+        "NAME" : {
+          "type" : "string"
+        },
+        "CITY" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}

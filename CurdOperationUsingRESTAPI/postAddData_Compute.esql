@@ -1,0 +1,37 @@
+
+
+CREATE COMPUTE MODULE postAddData_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		
+		DECLARE refInput REFERENCE TO InputRoot.JSON.Data.C_Input.CUSTOMER;
+        
+        
+		INSERT INTO Database.CUSTOMER(ID,NAME,CITY) VALUES (refInput.ID,refInput.NAME,refInput.CITY);
+		
+		IF SQLCODE=0 THEN 
+			
+			SET OutputRoot.JSON.Data.C_Output.Result='Your data is added Successfully';
+			
+		END IF;
+		
+		
+	
+	END;
+END MODULE;
