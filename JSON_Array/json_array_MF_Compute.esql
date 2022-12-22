@@ -1,0 +1,51 @@
+ 
+
+CREATE COMPUTE MODULE json_array_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+	
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		
+		
+		DECLARE inpref REFERENCE TO InputRoot.JSON.Data;
+		
+		
+		
+		SET OutputRoot.JSON.Data.DeallD=inpref.DeallD;
+		
+		CREATE FIELD OutputRoot.JSON.Data.PartyID IDENTITY (JSON.Array);
+		
+		SET OutputRoot.JSON.Data.PartyID.Item[1].PartyIDLists='10114969';
+		SET OutputRoot.JSON.Data.PartyID.Item[1].ApplicationToFull='1';
+		
+		SET OutputRoot.JSON.Data.PartyID.Item[2].PartyIDLists='10114779';
+		SET OutputRoot.JSON.Data.PartyID.Item[2].ApplicationToFull='2';
+		SET OutputRoot.JSON.Data.PartyID.Item[3].PartyIDLists='10114604';
+		SET OutputRoot.JSON.Data.PartyID.Item[3].ApplicationToFull='3';
+
+       SET OutputRoot.JSON.Data.EmployeeID=inpref.EmployeeID;
+ 
+      
+--      CREATE FIELD OutputRoot.JSON.Data.PartyID IDENTITY(JSON.Array);
+--		DECLARE src REFERENCE TO InputRoot.JSON.Data ;
+--		DECLARE tgt REFERENCE TO OutputRoot.JSON.Data.PartyID;
+--		WHILE LASTMOVE(src) DO
+--		SET tgt.Item.PartyIDLists=src.PartyIDLists ;
+--		SET tgt.Item.ApplicationToFull=src.ApplicationToFull ;
+--		move src NEXTSIBLING ;
+--
+--		if LASTMOVE(src) THEN
+--	CREATE NEXTSIBLING OF tgt AS tgt repeat ;
+--	END IF ;
+--	END WHILE;
+
+
+		
+		
+	END;
+END MODULE;
