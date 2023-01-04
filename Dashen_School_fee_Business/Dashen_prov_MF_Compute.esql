@@ -1,0 +1,53 @@
+
+DECLARE SOAP_ENV NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+DECLARE ns2 NAMESPACE 'http://webservice.wecodee.com/schoolfeeservice';
+CREATE COMPUTE MODULE Dashen_prov_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	     SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.(XMLNSC.NamespaceDecl)xmlns:SOAP_ENV = SOAP_ENV;
+	     SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Header.(XMLNSC.XmlDeclaration)=NULL;
+	  
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.(XMLNSC.Attribute)xmlns:ns2=ns2;
+  	 	 
+  	 	 
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:STUDENT_ID='STU000090162';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:STUDENT_NUMBER='E0003';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:STUDENT_NAME='YUSUF ABIDU ENDRIS';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:ST_GRADE='KG-3';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:ST_SECTION='A';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:PHONE_NO='9916294562';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:CAMPUS_ID='CAM/ESHET ACADAMY';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:INSTITUTION_ID='INS/ESHET ACADEMY';
+  	 	 
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PAYMENT_REF_NO='185STPY222840iE4';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PAYMENT_CYCLE='2022/2023';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:FIRST_DUE_DT='2022-10-05';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:NO_OF_PAYMENTS='9';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:TOTAL_FEE_AMOUNT='6480.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:DISCOUNTED_AMOUNT='0.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:TOTAL_EFF_FEE_AMT='6480.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:TOTAL_EFF_FEE_AMT='6480.0';
+  	 	 
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:PAYMENT_TYPE='FEE';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:PAYMENT_DUE_DT='2022-10-05';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:FEE_AMOUNT='720.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:PENALTY_AMOUNT='50.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:TOTAL_DUE_AMOUNT='770.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:DISCOUNTED_AMT='0.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:PAYMENT_STATUS='P';
+  	 	 
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:PAYMENT_TYPE='FEE';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:PAYMENT_DUE_DT='2022-10-05';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:FEE_AMOUNT='720.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:PENALTY_AMOUNT='50.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:TOTAL_DUE_AMOUNT='770.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:DISCOUNTED_AMT='0.0';
+  	 	 SET OutputRoot.XMLNSC.SOAP_ENV:Envelope.SOAP_ENV:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:PAYMENT_STATUS='U';
+	
+	
+	
+	
+		RETURN TRUE;
+	END;
+END MODULE;
