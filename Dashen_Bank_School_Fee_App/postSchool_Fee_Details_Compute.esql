@@ -1,0 +1,94 @@
+
+DECLARE soapenv NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+DECLARE sch NAMESPACE 'http://webservice.wecodee.com/schoolfeeservice';
+
+CREATE COMPUTE MODULE postSchool_Fee_Details_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE inpref REFERENCE TO  InputRoot.JSON.Data.SchoolFeeDetailsRequest.Item;
+		
+		   SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:soapenv = soapenv ;
+		   SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.Attribute)xmlns:sch=sch;
+	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Header.(XMLNSC.XmlDeclaration)=NULL;
+	 
+  	 	 
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:SchoolFeeDetailsRequest.sch:PHONE_NO=inpref.Phone_Number;
+  	 	   
+  	 	   -- channel Request ---
+  	 	  
+  	 	 DECLARE channel_req BLOB ASBITSTREAM(InputRoot.JSON.Data ENCODING 546 CCSID 1208);
+         DECLARE channel  CHARACTER CAST(channel_req AS CHARACTER CCSID 1208);
+        
+        SET Environment.value.Req=channel;
+  	 	 
+  	 	 --- Host Request ---
+  	 	 
+  	 	 DECLARE hr BLOB ASBITSTREAM(OutputRoot.*:XMLNSC.*:Envelope.*:Body ENCODING 546 CCSID 1208);
+  	 	 DECLARE hr1 CHARACTER CAST(hr AS CHARACTER CCSID 1208);
+  	 	 SET Environment.value.req2=hr1;
+  	 	 
+  	 	 
+  	 	   ---- MSG_ID---
+  	DECLARE ID,MSG_ID CHARACTER;  
+  	SET ID = CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS CHARACTER);
+	SET Environment.MSG_ID = ID;
+	
+	
+	                       --- for ip address-----
+	    DECLARE ip CHARACTER InputLocalEnvironment.REST.Input.URI;
+		DECLARE ip_add CHARACTER SUBSTRING(ip AFTER 'http://');
+		DECLARE ip_address CHARACTER SUBSTRING (ip_add BEFORE ':');
+		SET Environment.ip_details=ip_address;
+	                        ----------------------
+	
+	-----------------------------------------------------------------------------------------------------------------
+  	        
+  	       --DECLARE Root_tag CHARACTER FIELDNAME(InputRoot.JSON.Data.[>]);
+  	       
+  	       
+--  	       IF value = 'SchoolFeeDetailsRequest' THEN
+--  	       	
+--  	       	 DECLARE newUrl CHARACTER;
+--  	       
+--  	       DECLARE query  CHARACTER ;
+--  	       SET  query='SELECT BACKEND_URL FROM  dashen_service_list WHERE SERVICE_TYPE=?';
+--		   SET Environment.Result[]=PASSTHRU(query VALUES(value));
+--		   SET newUrl=Environment.Result.BACKEND_URL;
+--		  
+--		   SET OutputLocalEnvironment.Destination.HTTP.RequestURL = newUrl;
+--  	       	
+--  	        ELSEIF  value = 'CreateTransaction_FSFS_Request' THEN
+--  	       	
+--  	       	SET OutputLocalEnvironment.Destination.HTTP.RequestURL ='http://localhost:7801/payment_details';
+--  	       	
+--  	       ELSE
+--  	       	SET OutputRoot.JSON.Data.Result='No data Found';
+--  	       END IF;
+--  	    
+
+
+    
+  	 	   DECLARE dasheninp REFERENCE TO InputRoot.JSON.Data.Mandatory_Fields;
+  	 	   DECLARE value CHARACTER;
+  	        SET  value=dasheninp.Servicee_Type;   
+  	       
+  	 CASE
+	WHEN value = 'SchoolFeeDetailsRequest' THEN
+   
+   DECLARE newUrl CHARACTER;
+  	       
+  	       DECLARE query  CHARACTER ;
+  	       SET  query='SELECT BACKEND_URL FROM  dashen_service_list WHERE SERVICE_TYPE=?';
+		   SET Environment.Result[]=PASSTHRU(query VALUES(value));
+		   SET newUrl=Environment.Result.BACKEND_URL;
+		  
+		   SET OutputLocalEnvironment.Destination.HTTP.RequestURL = newUrl;
+   ELSE
+    	SET OutputRoot.JSON.Data.Result='No data Found';
+  END CASE;
+  	       
+		RETURN TRUE;
+	END;
+	
+END MODULE;

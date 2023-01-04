@@ -1,0 +1,55 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "Dashen_Bank_School_Fee_App",
+    "version" : "1.0.0",
+    "description" : "Dashen_Bank_School_Fee_App"
+  },
+  "paths" : {
+    "/School_Fee_Details" : {
+      "post" : {
+        "operationId" : "postSchool_Fee_Details",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a School_Fee_Details",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/Fee_Payment_Details" : {
+      "post" : {
+        "operationId" : "postFee_Payment_Details",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful."
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a Fee_Payment_Details",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    }
+  },
+  "basePath" : "/dashen_bank_school_fee_app/v1"
+}

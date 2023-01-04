@@ -1,0 +1,25 @@
+BROKER SCHEMA gen
+DECLARE S NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+DECLARE N1 NAMESPACE 'http://webservice.wecodee.com/schoolfeeservice';
+
+CREATE COMPUTE MODULE Dashen_En_Dec_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+--	
+--	DECLARE inp CHARACTER FIELDNAME(InputRoot.JSON.Data.[>]);   
+--	DECLARE querry CHARACTER 'SELECT BACKEND_URL FROM DASHEN_SERVICE_LIST WHERE SERVICE_TYPE = ?';
+--	SET Environment.Result[] = PASSTHRU(querry VALUES(inp));
+--	DECLARE bac_URL CHARACTER  Environment.Result.BACKEND_URL;
+--
+--	
+--	SET OutputLocalEnvironment.Destination.HTTP.RequestURL=bac_URL;
+  
+  SET OutputLocalEnvironment.Destination.REST.Request.BaseURL = 'http://localhost:7800/dashen_bank_school_fee_app/v1/School_Fee_Details';
+	
+	
+		RETURN TRUE;
+	END;
+
+	
+
+END MODULE;

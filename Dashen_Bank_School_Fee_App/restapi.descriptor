@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:restapiDescriptor xmlns="http://com.ibm.etools.mft.descriptor.base" xmlns:ns2="http://com.ibm.etools.mft.descriptor.restapi" definitionType="swagger_20" definitionFile="swagger.json" implementation="gen/Dashen_Bank_School_Fee_App.msgflow" https="false" definitionWithExtRef="false" faultFormat="JSON">
+    <ns2:operations>
+        <ns2:operation name="postFee_Payment_Details" implementation="postFee_Payment_Details.subflow"/>
+        <ns2:operation name="postSchool_Fee_Details" implementation="postSchool_Fee_Details.subflow"/>
+    </ns2:operations>
+    <ns2:errorHandlers>
+        <ns2:errorHandler type="CATCH" implementation="Dashen_Bank_School_Fee_AppInputCatchHandler.subflow"/>
+        <ns2:errorHandler type="FAILURE" implementation="Dashen_Bank_School_Fee_AppInputFailureHandler.subflow"/>
+    </ns2:errorHandlers>
+</ns2:restapiDescriptor>
