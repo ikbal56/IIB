@@ -1,4 +1,4 @@
-
+PATH Dashen_Bank_DB_LOGS;
 
 CREATE COMPUTE MODULE postFee_Payment_Details_Compute1
 	CREATE FUNCTION Main() RETURNS BOOLEAN
@@ -7,79 +7,79 @@ CREATE COMPUTE MODULE postFee_Payment_Details_Compute1
 		
 		   ----------------------Host_resp----------------------------
 		   
-		   DECLARE hst_resp BLOB ASBITSTREAM(InputRoot.*:XMLNSC.*:Envelope.*:Body ENCODING 546 CCSID 1208);
+		   DECLARE hst_resp BLOB ASBITSTREAM(InputRoot.*:SOAP.*:Body ENCODING 546 CCSID 1208);
 		   DECLARE fee_hstresp CHARACTER CAST(hst_resp AS CHARACTER CCSID 1208);
 		   
 		             ----------------------------------------
 		
 		
-		DECLARE paymentresp REFERENCE TO InputRoot.*:XMLNSC.*:Envelope.*:Body.*:CREATETRANSACTION_FSFS_RES.*:FCUBS_HEADER;
+		DECLARE paymentresp REFERENCE TO InputRoot.*:SOAP.*:Body.*:CREATETRANSACTION_FSFS_RES.*:FCUBS_HEADER;
 		
-		DECLARE paymentresp2 REFERENCE TO InputRoot.*:XMLNSC.*:Envelope.*:Body.*:CREATETRANSACTION_FSFS_RES.*:FCUBS_BODY.*:Transaction_Details;
+		DECLARE paymentresp2 REFERENCE TO InputRoot.*:SOAP.*:Body.*:CREATETRANSACTION_FSFS_RES.*:FCUBS_BODY.*:Transaction_Details;
 		
-		DECLARE paymentresp3 REFERENCE TO InputRoot.*:XMLNSC.*:Envelope.*:Body.*:CREATETRANSACTION_FSFS_RES.*:FCUBS_BODY.*:FCUBS_WARNING_RESP.*:WARNING;
+		DECLARE paymentresp3 REFERENCE TO InputRoot.*:SOAP.*:Body.*:CREATETRANSACTION_FSFS_RES.*:FCUBS_BODY.*:FCUBS_WARNING_RESP.*:WARNING;
 		
-		CREATE FIELD OutputRoot.JSON.Data.CreateTransaction_FSFS_RES IDENTITY(JSON.Array);
+		--CREATE FIELD OutputRoot.JSON.Data.CreateTransactionResponse IDENTITY(JSON.Array);
 		
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Message_Id=paymentresp.*:MSGID;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].User_Id=paymentresp.*:USERID;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Branch=paymentresp.*:BRANCH;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Message_Status=paymentresp.*:MSGSTAT;
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.MessageId=paymentresp.*:MSGID;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.UserId=paymentresp.*:USERID;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Branch=paymentresp.*:BRANCH;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.MessageStatus=paymentresp.*:MSGSTAT;
 		   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.XREF=paymentresp2.*:XREF;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Fcc_Ref=paymentresp2.*:FCCREF;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.PRD=paymentresp2.*:PRD;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Branch=paymentresp2.*:BRN;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Transaction_Branch=paymentresp2.*:TXNBRN;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Transaction_Account=paymentresp2.*:TXNACC;   
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Transaction_Ccy=paymentresp2.*:TXNCCY;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Transaction_Amount=paymentresp2.*:TXNAMT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Transaction_Trn=paymentresp2.*:TXNTRN;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Off_Set_Branch=paymentresp2.*:OFFSETBRN;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Off_SetAccount=paymentresp2.*:OFFSETACC;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Off_SetCCY=paymentresp2.*:OFFSETCCY;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Off_SetAmount=paymentresp2.*:OFFSETAMT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Off_SetTRN=paymentresp2.*:OFFSETTRN;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.XRATE=paymentresp2.*:XRATE;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.LCYAmount=paymentresp2.*:LCYAMT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Transaction_Date=paymentresp2.*:TXNDATE;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Val_Date=paymentresp2.*:VALDATE;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.RELCUST=paymentresp2.*:RELCUST;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.TCYTOTCHGAmount=paymentresp2.*:TCYTOTCHGAMT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Narrative=paymentresp2.*:NARRATIVE;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Track_Reverse=paymentresp2.*:TRACKREVERSE;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.LCYXRATE=paymentresp2.*:LCYXRATE;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.MakerId=paymentresp2.*:MAKERID;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.MakerStamp=paymentresp2.*:MAKERSTAMP;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.CheckerId=paymentresp2.*:CHECKERID;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.CheckerStamp=paymentresp2.*:CHECKERSTAMP;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Rec_Status=paymentresp2.*:RECSTAT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Auth_Status=paymentresp2.*:AUTHSTAT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.DR_Account='Transaction';  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.TransactionDRCR=paymentresp2.*:TXNDRCR;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Book_Date=paymentresp2.*:BOOKDATE;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.FT=paymentresp2.*:FT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.LCYTOTCHGAmount=paymentresp2.*:LCYTOTCHGAMT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.DENMCCY1=paymentresp2.*:DENMCCY1;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.DENMAmount1=paymentresp2.*:DENMAMT1;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.DENMAmount2=paymentresp2.*:DENMAMT2;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.AccountTitle1=paymentresp2.*:ACCTITLE1;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.AccountTitle2=paymentresp2.*:ACCTITLE2;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.ACTAmount=paymentresp2.*:ACTAMT;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.CHRAccount=paymentresp2.*:CHRACC;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Cust_Name=paymentresp2.*:CUSTNAME;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.Branch=paymentresp2.*:Mis_Details.*:BRANCH;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.Cust_Number=paymentresp2.*:Mis_Details.*:CUSTNO;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.CCY=paymentresp2.*:Mis_Details.*:CCY;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.RTFLAG=paymentresp2.*:Mis_Details.*:RTFLAG;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.FUNDMIS1LBL1=paymentresp2.*:Mis_Details.*:FUNDMIS1LBL1;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.COMPMIS3LBL3=paymentresp2.*:Mis_Details.*:COMPMIS3LBL3;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.TransactionMIS1LBL1=paymentresp2.*:Mis_Details.*:TXNMIS1LBL1;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.TransactionMIS2LBL2=paymentresp2.*:Mis_Details.*:TXNMIS2LBL2;  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Transaction_Details.Mis_Details.TransactionMIS3LBL3=paymentresp2.*:Mis_Details.*:TXNMIS3LBL3;
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.XREF=paymentresp2.*:XREF;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.FccRef=paymentresp2.*:FCCREF;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.PRD=paymentresp2.*:PRD;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.Branch=paymentresp2.*:BRN;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TransactionBranch=paymentresp2.*:TXNBRN;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TransactionAccount=paymentresp2.*:TXNACC;   
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TransactionCcy=paymentresp2.*:TXNCCY;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TransactionAmount=paymentresp2.*:TXNAMT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TransactionTrn=paymentresp2.*:TXNTRN;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.OffSetBranch=paymentresp2.*:OFFSETBRN;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.OffSetAccount=paymentresp2.*:OFFSETACC;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.OffSetCCY=paymentresp2.*:OFFSETCCY;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.OffSetAmount=paymentresp2.*:OFFSETAMT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.OffSetTRN=paymentresp2.*:OFFSETTRN;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.XRATE=paymentresp2.*:XRATE;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.LCYAmount=paymentresp2.*:LCYAMT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TransactionDate=paymentresp2.*:TXNDATE;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.ValDate=paymentresp2.*:VALDATE;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.RELCUST=paymentresp2.*:RELCUST;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TCYTOTCHGAmount=paymentresp2.*:TCYTOTCHGAMT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.Narrative=paymentresp2.*:NARRATIVE;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TrackReverse=paymentresp2.*:TRACKREVERSE;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.LCYXRATE=paymentresp2.*:LCYXRATE;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MakerId=paymentresp2.*:MAKERID;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MakerStamp=paymentresp2.*:MAKERSTAMP;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.CheckerId=paymentresp2.*:CHECKERID;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.CheckerStamp=paymentresp2.*:CHECKERSTAMP;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.RecStatus=paymentresp2.*:RECSTAT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.AuthStatus=paymentresp2.*:AUTHSTAT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.DRAccount='Transaction';  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.TransactionDRCR=paymentresp2.*:TXNDRCR;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.BookDate=paymentresp2.*:BOOKDATE;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.FT=paymentresp2.*:FT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.LCYTOTCHGAmount=paymentresp2.*:LCYTOTCHGAMT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.DENMCCY1=paymentresp2.*:DENMCCY1;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.DENMAmount1=paymentresp2.*:DENMAMT1;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.DENMAmount2=paymentresp2.*:DENMAMT2;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.AccountTitle1=paymentresp2.*:ACCTITLE1;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.AccountTitle2=paymentresp2.*:ACCTITLE2;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.ACTAmount=paymentresp2.*:ACTAMT;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.CHRAccount=paymentresp2.*:CHRACC;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.CustomerName=paymentresp2.*:CUSTNAME;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.Branch=paymentresp2.*:Mis_Details.*:BRANCH;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.CustNumber=paymentresp2.*:Mis_Details.*:CUSTNO;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.CCY=paymentresp2.*:Mis_Details.*:CCY;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.RTFLAG=paymentresp2.*:Mis_Details.*:RTFLAG;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.FUNDMIS1LBL1=paymentresp2.*:Mis_Details.*:FUNDMIS1LBL1;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.COMPMIS3LBL3=paymentresp2.*:Mis_Details.*:COMPMIS3LBL3;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.TransactionMIS1LBL1=paymentresp2.*:Mis_Details.*:TXNMIS1LBL1;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.TransactionMIS2LBL2=paymentresp2.*:Mis_Details.*:TXNMIS2LBL2;  
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.Transaction_Details.MisDetails.TransactionMIS3LBL3=paymentresp2.*:Mis_Details.*:TXNMIS3LBL3;
 		  
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Fcubs_Warning_Resp.Warning.W_Code=paymentresp3.*:WCODE; 
-		SET OutputRoot.JSON.Data.CreateTransaction_FSFS_RES.item[1].Fcubs_Warning_Resp.Warning.W_Desc=paymentresp3.*:WDESC; 
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.FcubsWarningResp.Warning.WarningCode=paymentresp3.*:WCODE; 
+		SET OutputRoot.JSON.Data.CreateTransactionResponse.FcubsWarningResp.Warning.WarningDescription=paymentresp3.*:WDESC; 
 		
 	
 	
@@ -112,13 +112,9 @@ CREATE COMPUTE MODULE postFee_Payment_Details_Compute1
 		SET msgflow_name=MessageFlowLabel;
 		SET time_stamp=CURRENT_TIMESTAMP;
 		
-		CALL dashen_payment_details(msg_id,ip,channel_req,host_req,host_resp,channel_resp,app_name,msgflow_name,time_stamp);
+		CALL dashen_fee_details(msg_id,ip,channel_req,host_req,host_resp,channel_resp,app_name,msgflow_name,time_stamp);
 		
 	
 		RETURN TRUE;
 	END;
-
-     CREATE PROCEDURE  dashen_payment_details (IN MSG_ID CHARACTER,IN IP CHARACTER,IN CHANNEL_REQ CHARACTER,IN HOST_REQ CHARACTER,IN HOST_RESP CHARACTER,IN CHANNEL_RESP CHARACTER,IN APP_NAME CHARACTER,IN MSGFLOW_NAME CHARACTER,IN TIME_STAMP TIMESTAMP)
-	LANGUAGE DATABASE
-	EXTERNAL NAME "DASHEN_PROC";
 END MODULE;

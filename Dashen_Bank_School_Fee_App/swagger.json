@@ -6,7 +6,7 @@
     "description" : "Dashen_Bank_School_Fee_App"
   },
   "paths" : {
-    "/School_Fee_Details" : {
+    "/schoolfeeenquiry" : {
       "post" : {
         "operationId" : "postSchool_Fee_Details",
         "responses" : {
@@ -28,9 +28,34 @@
         } ]
       }
     },
-    "/Fee_Payment_Details" : {
+    "/FeePaymentDetails" : {
       "post" : {
         "operationId" : "postFee_Payment_Details",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        },
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "description" : "Insert a Fee_Payment_Details",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
+      }
+    },
+    "/querybystudentid" : {
+      "post" : {
+        "operationId" : "postQuerybystudentid",
         "responses" : {
           "200" : {
             "description" : "The operation was successful."
@@ -38,7 +63,7 @@
         },
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
-        "description" : "Insert a Fee_Payment_Details",
+        "description" : "Insert a querybystudentid",
         "parameters" : [ {
           "name" : "body",
           "in" : "body",

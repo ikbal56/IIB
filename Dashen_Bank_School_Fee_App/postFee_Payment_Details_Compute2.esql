@@ -1,0 +1,19 @@
+PATH java_code_en_dec;
+
+CREATE COMPUTE MODULE postFee_Payment_Details_Compute2
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+		
+		DECLARE REf BLOB ASBITSTREAM(InputRoot.JSON.Data ENCODING 546 CCSID 1208);
+		DECLARE result CHARACTER CAST(REf AS CHARACTER CCSID 1208);
+		
+		DECLARE key CHARACTER 131;
+		SET Environment.Result=encryption_data (result,key);
+		SET OutputRoot.JSON.Data.CreateTransactionResponse=Environment.Result;
+			
+	
+		RETURN TRUE;
+	END;
+END MODULE;

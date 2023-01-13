@@ -8,12 +8,21 @@ CREATE COMPUTE MODULE postSchool_Fee_Details_Compute
 		
 		DECLARE inpref REFERENCE TO  InputRoot.JSON.Data.SchoolFeeDetailsRequest.Item;
 		
-		   SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:soapenv = soapenv ;
+		IF inpref.PhoneNumber='9916294569' THEN
+			
+			SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:soapenv = soapenv ;
 		   SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.Attribute)xmlns:sch=sch;
 	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Header.(XMLNSC.XmlDeclaration)=NULL;
 	 
   	 	 
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:SchoolFeeDetailsRequest.sch:PHONE_NO=inpref.Phone_Number;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:SchoolFeeDetailsRequest.sch:PHONE_NO=inpref.PhoneNumber;
+  	 	   
+  	 	    SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:soapenv = soapenv ;
+		   SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.Attribute)xmlns:sch=sch;
+	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Header.(XMLNSC.XmlDeclaration)=NULL;
+	 
+  	 	 
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:SchoolFeeDetailsRequest.sch:PHONE_NO=inpref.PhoneNumber;
   	 	   
   	 	   -- channel Request ---
   	 	  
@@ -87,7 +96,16 @@ CREATE COMPUTE MODULE postSchool_Fee_Details_Compute
    ELSE
     	SET OutputRoot.JSON.Data.Result='No data Found';
   END CASE;
-  	       
+  	 	   
+		ELSE
+			
+			SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.MessageId='STO0555500';
+			SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.Error.ErrorCode='001';
+			SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.Error.ErrorDescription='Invalid Mobile Number';
+			propagate TO TERMINAL 'out1';
+		END IF;
+		
+		    	       
 		RETURN TRUE;
 	END;
 	

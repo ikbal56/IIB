@@ -14,7 +14,14 @@ CREATE COMPUTE MODULE Dashen_En_Dec_MF_Compute
 --	
 --	SET OutputLocalEnvironment.Destination.HTTP.RequestURL=bac_URL;
   
-  SET OutputLocalEnvironment.Destination.REST.Request.BaseURL = 'http://localhost:7800/dashen_bank_school_fee_app/v1/School_Fee_Details';
+  DECLARE var BLOB ASBITSTREAM (InputRoot.JSON.Data ENCODING 546 CCSID 1208);
+  DECLARE en CHARACTER CAST(var AS CHARACTER CCSID 1208);
+  DECLARE key  CHARACTER 'abc1251526345789';
+  SET Environment.en=encryp(en,key);
+  SET Environment.result=dec(Environment.en,key);
+  
+  
+  SET OutputLocalEnvironment.Destination.REST.Request.BaseURL = 'http://localhost:7800/dashen_bank_school_fee_app/v1/querybystudentid';
 	
 	
 		RETURN TRUE;
@@ -23,3 +30,13 @@ CREATE COMPUTE MODULE Dashen_En_Dec_MF_Compute
 	
 
 END MODULE;
+
+CREATE PROCEDURE encryp (IN StringToEncrypt CHARACTER,IN passwd CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "com.eidiko.encryp_dec.Encryption_Decryption.Encryption";
+
+CREATE PROCEDURE dec (IN StringToDecrypt CHARACTER,IN passwd CHARACTER )
+RETURNS CHARACTER
+LANGUAGE JAVA
+EXTERNAL NAME "com.eidiko.encryp_dec.Encryption_Decryption.Decryption";

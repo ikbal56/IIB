@@ -1,0 +1,170 @@
+PATH Dashen_Bank_DB_LOGS;
+
+CREATE COMPUTE MODULE postQuerybystudentid_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	
+		                               -- Host_Response--
+		
+		DECLARE host_response BLOB ASBITSTREAM(InputRoot.*:XMLNSC.*:Envelope.*:Body ENCODING 546 CCSID 1208);
+		DECLARE hsp CHARACTER CAST(host_response AS CHARACTER CCSID 1208);
+	                               
+	                               ---------------------------------
+	                               
+	DECLARE inpresp REFERENCE TO InputRoot.*:XMLNSC.*:Envelope.*:Body.*:SchoolFeeDetailsResponse.*:header;
+	DECLARE inpresponse REFERENCE TO InputRoot.*:XMLNSC.*:Envelope.*:Body.*:SchoolFeeDetailsResponse.*:SchoolFeeDetailsBody.*:StudentDetails;
+	DECLARE inpref REFERENCE TO InputRoot.*:XMLNSC.*:Envelope.*:Body.*:SchoolFeeDetailsResponse.*:SchoolFeeDetailsBody.*:StudentDetails.*:FeePaymentDetails;
+
+	
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.header.SOURCE=inpresp.*:SOURCE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.header.UBSCOMP=inpresp.*:UBSCOMP;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.header.USERID=inpresp.*:USERID;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.header.BRANCH=inpresp.*:BRANCH;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.header.SERVICE=inpresp.*:SERVICE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.header.OPERATION=inpresp.*:OPERATION;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.header.MSGSTAT=inpresp.*:MSGSTAT;
+	
+	DECLARE value INTEGER;
+	DECLARE value2 INTEGER;
+	SET value=LENGTH(inpresponse.PhoneNumber);
+	SET value2=LENGTH(inpresponse.STUDENT_ID);
+	
+--	IF value='10' THEN
+--		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.PhoneNumber=inpresponse.*:PhoneNumber;
+--		
+--	ELSE
+--		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.STUDENT_ID=inpresponse.*:STUDENT_ID;
+--	END IF;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.STUDENT_ID=inpresponse.*:STUDENT_ID;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.STUDENT_NUMBER=inpresponse.*:STUDENT_NUMBER;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.STUDENT_NAME=inpresponse.*:STUDENT_NAME;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.ST_GRADE=inpresponse.*:ST_GRADE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.ST_GRADE=inpresponse.*:PHONE_NO;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.CAMPUS_ID=inpresponse.*:CAMPUS_ID;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.INSTITUTION_ID=inpresponse.*:INSTITUTION_ID;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PAYMENT_REF_NO=inpref.*:PAYMENT_REF_NO;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PAYMENT_CYCLE=inpref.*:PAYMENT_CYCLE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.FIRST_DUE_DT=inpref.*:FIRST_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.NO_OF_PAYMENTS=inpref.*:NO_OF_PAYMENTS;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.TOTAL_FEE_AMOUNT=inpref.*:TOTAL_FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.DISCOUNTED_AMOUNT=inpref.*:DISCOUNTED_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.TOTAL_EFF_FEE_AMT=inpref.*:TOTAL_EFF_FEE_AMT;
+	
+	CREATE FIELD OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails IDENTITY(JSON.Array);
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[1].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[1].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[1].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[1].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[1].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[1].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[1].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[1].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[1].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[1].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[1].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[1].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[1].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[1].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[2].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[2].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[2].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[2].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[2].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[2].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[2].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[2].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[2].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[2].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[2].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[2].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[2].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[2].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[3].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[3].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[3].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[3].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[3].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[3].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[3].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[3].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[3].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[3].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[3].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[3].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[3].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[3].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[4].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[4].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[4].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[4].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[4].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[4].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[4].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[4].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[4].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[4].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[4].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[4].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[4].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[4].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[5].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[5].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[5].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[5].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[5].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[5].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[5].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[5].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[5].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[5].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[5].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[5].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[5].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[5].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[6].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[6].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[6].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[6].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[6].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[6].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[6].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[6].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[6].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[6].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[6].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[6].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[6].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[6].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[7].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[7].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[7].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[7].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[7].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[7].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[7].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[7].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[7].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[7].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[7].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[7].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[7].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[7].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[8].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[8].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[8].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[8].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[8].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[8].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[8].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[8].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[8].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[8].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[8].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[8].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[8].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[8].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[9].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[9].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[9].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[9].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[9].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[9].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[9].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[9].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[9].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[9].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[9].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[9].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[9].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[9].*:PAYMENT_STATUS;
+	
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[10].PAYMENT_TYPE=inpref.*:PaymentScheduleDetails[10].*:PAYMENT_TYPE;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[10].PAYMENT_DUE_DT=inpref.*:PaymentScheduleDetails[10].*:PAYMENT_DUE_DT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[10].FEE_AMOUNT=inpref.*:PaymentScheduleDetails[10].*:FEE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[10].PENALTY_AMOUNT=inpref.*:PaymentScheduleDetails[10].*:PENALTY_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[10].TOTAL_DUE_AMOUNT=inpref.*:PaymentScheduleDetails[10].*:TOTAL_DUE_AMOUNT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[10].DISCOUNTED_AMT=inpref.*:PaymentScheduleDetails[10].*:DISCOUNTED_AMT;
+	SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetailsBody.StudentDetails.FeePaymentDetails.PaymentScheduleDetails.item[10].PAYMENT_STATUS=inpref.*:PaymentScheduleDetails[10].*:PAYMENT_STATUS;
+	
+											-----Channel Response--------
+	                                           	
+	               	DECLARE ch_resp BLOB ASBITSTREAM(OutputRoot.JSON.Data ENCODING 546 CCSID 1208);
+	                DECLARE csp CHARACTER CAST (ch_resp AS CHARACTER CCSID 1208);
+	                                           	
+		                                         ---------------------------
+		                                         
+		                                                                              
+		    
+		             --DB_LOGS--
+		                                                  
+		DECLARE msg_id,ip,channel_req,channel_resp,host_req,host_resp,app_name,msgflow_name CHARACTER;
+		DECLARE time_stamp TIMESTAMP;
+		
+		SET msg_id=Environment.MSG_ID;
+		
+			
+		SET ip=Environment.ip_details;
+		SET channel_req=Environment.value.Req;
+		SET host_req=Environment.value.req2;
+		SET host_resp=hsp;
+		SET channel_resp=csp;
+		SET app_name=ApplicationLabel;
+		SET msgflow_name=MessageFlowLabel;
+		SET time_stamp=CURRENT_TIMESTAMP;
+		
+		CALL dashen_fee_details (msg_id,ip,channel_req,host_req,host_resp,channel_resp,app_name,msgflow_name,time_stamp);
+
+      
+	
+		RETURN TRUE;
+	END;
+END MODULE;

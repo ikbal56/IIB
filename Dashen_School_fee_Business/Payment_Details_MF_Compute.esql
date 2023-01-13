@@ -12,8 +12,9 @@ CREATE COMPUTE MODULE Payment_Details_MF_Compute
   	 	 SET OutputRoot.XMLNSC.S:Envelope.S:Body.E:CREATETRANSACTION_FSFS_RES.(XMLNSC.Attribute)xmlns=E;
 	  
 	
-	     DECLARE inpres REFERENCE TO InputRoot.*:SOAP.*:Body.*:CREATETRANSACTION_FSFS_REQ.*:FCUBS_HEADER;
-	     DECLARE inpres2 REFERENCE TO InputRoot.*:SOAP.*:Body.*:CREATETRANSACTION_FSFS_REQ.*:FCUBS_BODY.*:Transaction_Details;
+	     --DECLARE inpres REFERENCE TO InputRoot.*:SOAP.*:Body.*:CreateTransactionRequest.*:FCUBSHEADER;
+	     DECLARE inpres REFERENCE TO InputRoot.*:SOAP.*:Body.*:CreateTransactionRequest.*:FCUBSHEADER;
+	     DECLARE inpres2 REFERENCE TO InputRoot.*:SOAP.*:Body.*:CreateTransactionRequest.*:FCUBSBODY.*:TransactionDetails;
 	    
 	    
 	     

@@ -4,69 +4,81 @@ DECLARE fcub NAMESPACE 'http://fcubs.ofss.com/service/FCUBSRTService';
 CREATE COMPUTE MODULE postFee_Payment_Details_Compute
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
-	
-	      DECLARE inprefs REFERENCE TO  InputRoot.JSON.Data.CreateTransaction_FSFS_Request;
-	      DECLARE inp REFERENCE TO InputRoot.JSON.Data.CreateTransaction_FSFS_Request.Item.Transaction_Details;
 		
-		   SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:soapenv = soapenv ;
+		DECLARE REf REFERENCE TO InputRoot.JSON.Data.CreateTransactionRequest;
+		DECLARE Response CHARACTER '';
+		DECLARE key CHARACTER 131;
+		call java_code_en_dec.decryption_data(InputRoot.JSON.Data.CreateTransactionRequest,key) into Response;
+		
+			
+		CREATE LASTCHILD of Environment DOMAIN 'JSON' PARSE(Response CCSID 1208);
+		 DECLARE inps REFERENCE TO Environment.JSON.Data;
+	     DECLARE inpref REFERENCE TO Environment.JSON.Data.CreateTransactionRequest;
+		
+		
+	
+	     -- DECLARE inprefs REFERENCE TO  InputRoot.JSON.Data.CreateTransactionRequest;
+	     -- DECLARE inp REFERENCE TO InputRoot.JSON.Data.CreateTransactionRequest.TransactionDetails;
+		
+		   SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:soapenv=soapenv;
 		   SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.Attribute)xmlns:fcub=fcub;
 	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Header.(XMLNSC.XmlDeclaration)=NULL;
 	 
   	 	 
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_HEADER.fcub:SOURCE='AMEXT';
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_HEADER.fcub:UBSCOMP='FCUBS';
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_HEADER.fcub:USERID=inprefs.Item.User_Id;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_HEADER.fcub:BRANCH=inprefs.Item.Branch;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_HEADER.fcub:SERVICE='FCUBSRTService';
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_HEADER.fcub:OPERATION='CreateTransaction';
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSHEADER.fcub:SOURCE='AMEXT';
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSHEADER.fcub:UBSCOMP='FCUBS';
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSHEADER.fcub:USERID=inps.UserId;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSHEADER.fcub:BRANCH=inps.Branch;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSHEADER.fcub:SERVICE='FCUBSRTService';
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSHEADER.fcub:OPERATION='CreateTransaction';
   	 	   
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:XREF=inp.Xref;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:PRD=inp.Prd;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:BRN=inp.Branch;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:MODULE=inp.Module;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:TXNBRN=inp.Transaction_Branch;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:TXNACC=inp.Transaction_Account;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:TXNCCY=inp.Transaction_Ccy;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:TXNAMT=inp.Transaction_Amount;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:TXNTRN=inp.Transaction_Trn;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:OFFSETBRN=inp.Off_Set_Branch;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:OFFSETACC=inp.Off_Set_Account;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:OFFSETCCY=inp.Off_Set_Ccy;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:OFFSETAMT=inp.Off_Set_Amount;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:OFFSETTRN=inp.Off_Set_Trn;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:TXNDATE=inp.Transaction_Date;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:VALDATE=inp.Val_Date;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:NARRATIVE=inp.Narrative;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:AUTHSTAT=inp.Auth_Status;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:XREF=inps.TransactionDetails.Xref;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:PRD=inps.TransactionDetails.Prd;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:BRN=inps.TransactionDetails.Branch;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:MODULE=inps.TransactionDetails.Module;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:TXNBRN=inps.TransactionDetails.TransactionBranch;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:TXNACC=inps.TransactionDetails.TransactionAccount;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:TXNCCY=inps.TransactionDetails.TransactionCcy;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:TXNAMT=inps.TransactionDetails.TransactionAmount;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:TXNTRN=inps.TransactionDetails.TransactionTrn;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:OFFSETBRN=inps.TransactionDetails.OffSetBranch;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:OFFSETACC=inps.TransactionDetails.OffSetAccount;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:OFFSETCCY=inps.TransactionDetails.OffSetCcy;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:OFFSETAMT=inps.TransactionDetails.OffSetAmount;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:OFFSETTRN=inps.TransactionDetails.OffSetTrn;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:TXNDATE=inps.TransactionDetails.TransactionDate;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:VALDATE=inps.TransactionDetails.ValDate;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:NARRATIVE=inps.TransactionDetails.Narrative;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:AUTHSTAT=inps.TransactionDetails.AuthStatus;
   	 	   
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[1].fcub:FIELD_NAME=inp.Udf_Details.Item[1].Field_Name;
-  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[1].fcub:FIELD_VALUE=inp.Udf_Details.Item[1].Field_Value;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[1].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[1].FieldName;
+  	 	   SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[1].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[1].FieldValue;
 	
-	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[2].fcub:FIELD_NAME=inp.Udf_Details.Item[2].Field_Name;
-  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[2].fcub:FIELD_VALUE=inp.Udf_Details.Item[2].Field_Value;
+	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[2].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[2].FieldName;
+  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[2].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[2].FieldValue;
 	
-	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[3].fcub:FIELD_NAME=inp.Udf_Details.Item[3].Field_Name;
-  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[3].fcub:FIELD_VALUE=inp.Udf_Details.Item[3].Field_Value;
+	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[3].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[3].FieldName;
+  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[3].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[3].FieldValue;
+--	
+	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[4].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[4].FieldName;
+  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[4].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[4].FieldValue;
 	
-	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[4].fcub:FIELD_NAME=inp.Udf_Details.Item[4].Field_Name;
-  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[4].fcub:FIELD_VALUE=inp.Udf_Details.Item[4].Field_Value;
+	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[5].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[5].FieldName;
+  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[5].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[5].FieldValue;
 	
-	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[5].fcub:FIELD_NAME=inp.Udf_Details.Item[5].Field_Name;
-  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[5].fcub:FIELD_VALUE=inp.Udf_Details.Item[5].Field_Value;
+	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[6].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[6].FieldName;
+  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[6].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[6].FieldValue;
+  	 
+	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[7].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[7].FieldName;
+    SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[7].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[7].FieldValue;
 	
-	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[6].fcub:FIELD_NAME=inp.Udf_Details.Item[6].Field_Name;
-  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[6].fcub:FIELD_VALUE=inp.Udf_Details.Item[6].Field_Value;
+ 	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[8].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[8].FieldName;
+  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[8].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[8].FieldValue;
 	
-	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[7].fcub:FIELD_NAME=inp.Udf_Details.Item[7].Field_Name;
-  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[7].fcub:FIELD_VALUE=inp.Udf_Details.Item[7].Field_Value;
-	
-	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[8].fcub:FIELD_NAME=inp.Udf_Details.Item[8].Field_Name;
-  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[8].fcub:FIELD_VALUE=inp.Udf_Details.Item[8].Field_Value;
-	
-	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[9].fcub:FIELD_NAME=inp.Udf_Details.Item[9].Field_Name;
-  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CREATETRANSACTION_FSFS_REQ.fcub:FCUBS_BODY.fcub:Transaction_Details.fcub:Udf_Details[9].fcub:FIELD_VALUE=inp.Udf_Details.Item[9].Field_Value;
-	
-	
+	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[9].fcub:FIELDNAME=inps.TransactionDetails.UdfDetails.Item[9].FieldName;
+  	 SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.fcub:CreateTransactionRequest.fcub:FCUBSBODY.fcub:TransactionDetails.fcub:UdfDetails[9].fcub:FIELDVALUE=inps.TransactionDetails.UdfDetails.Item[9].FieldValue;
+----	
+----	
 	  -----------------------Channel_Request---------------------------------------
 	  
 	  DECLARE ch_req BLOB ASBITSTREAM(InputRoot.JSON.Data ENCODING 546 CCSID 1208);
@@ -91,18 +103,7 @@ CREATE COMPUTE MODULE postFee_Payment_Details_Compute
 	DECLARE hst_req BLOB ASBITSTREAM(OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body ENCODING 546 CCSID 1208);
 	DECLARE hostreq CHARACTER CAST(hst_req AS CHARACTER CCSID 1208);
 	SET Environment.val.Result2=hostreq;
-	                 -------------------------------                               
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+	                 -------------------------------                              
 	  
 	  
 	  
@@ -138,7 +139,7 @@ CREATE COMPUTE MODULE postFee_Payment_Details_Compute
   	 	   
   	        SET  value=dasheninp.Servicee_Type;
   	        CASE
-	WHEN value = 'CreateTransaction_FSFS_Request' THEN
+	WHEN value = 'CreateTransactionRequest' THEN
    
    DECLARE newUrl CHARACTER;
   	       
@@ -147,7 +148,8 @@ CREATE COMPUTE MODULE postFee_Payment_Details_Compute
 		   SET Environment.Result1[]=PASSTHRU(query VALUES(value));
 		   SET newUrl=Environment.Result1.BACKEND_URL;
 		  
-		   SET OutputLocalEnvironment.Destination.HTTP.RequestURL = newUrl;
+		   --SET OutputLocalEnvironment.Destination.HTTP.RequestURL = newUrl;
+		   SET OutputLocalEnvironment.Destination.SOAP.Request.Transport.HTTP.WebServiceURL = newUrl;
   	       	
    ELSE
     	SET OutputRoot.JSON.Data.Result='No data Found';

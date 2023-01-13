@@ -3,6 +3,8 @@
 	<name>Dashen_Bank_School_Fee_App</name>
 	<comment></comment>
 	<projects>
+		<project>Dashen_Bank_DB_LOGS</project>
+		<project>java_code_en_dec</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

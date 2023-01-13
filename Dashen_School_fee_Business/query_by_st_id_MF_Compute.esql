@@ -1,0 +1,148 @@
+
+DECLARE env NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+
+
+CREATE COMPUTE MODULE query_by_st_id_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+            SET OutputRoot.XMLNSC.env:Envelope.(XMLNSC.Attribute)xmlns:env=env; 
+	        SET OutputRoot.XMLNSC.env:Envelope.env:Header.(XMLNSC.XmlDeclaration)=NULL;
+	      
+		 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.(XMLNSC.Attribute)xmlns:ns2=ns2;
+  
+       DECLARE inp REFERENCE TO InputRoot.*:SOAP.*:Body.*:QueryByStudentIdRequest.*:header;
+       
+       DECLARE inpres REFERENCE TO InputRoot.*:SOAP.*:Body.*:QueryByStudentIdRequest.*:QueryByStudentIdBody;
+  
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:header.ns2:SOURCE=inp.*:SOURCE;
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:header.ns2:UBSCOMP=inp.*:UBSCOMP;
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:header.ns2:USERID=inp.*:USERID;
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:header.ns2:BRANCH=inp.*:BRANCH;
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:header.ns2:SERVICE=inp.*:SERVICE;
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:header.ns2:OPERATION=inp.*:OPERATION;
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:header.ns2:MSGSTAT='SUCCESS';
+--  	 	 
+--  	 	 DECLARE var INTEGER;
+--  	 	 DECLARE var2 INTEGER;
+--  	 	 SET var=LENGTH(inpres.PhoneNumber);
+--  	 	 SET var2=LENGTH(inpres.STUDENT_ID);
+--  	 	 IF var='10'THEN
+--  	 	  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:PhoneNumber=inpres.*:PhoneNumber;	
+--  	 	 ELSE
+--  	 	 	
+--  	 	 END IF;
+  	 	
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:STUDENT_ID=inpres.*:STUDENT_ID;
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:STUDENT_NUMBER='CAJ/2280/13';
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:STUDENT_NAME='SEBAHIL AHMED MUHDIN';
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:ST_GRADE='UKG';
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:PHONE_NO='917306863';
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:CAMPUS_ID='CAM/JEMO KG';
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:INSTITUTION_ID='INS/CORDOVA ACADAMY';
+  	 	 
+  	 	 SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PAYMENT_REF_NO='000STPY2128205Vh';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PAYMENT_CYCLE='2022/2023';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:FIRST_DUE_DT='2022-09-11';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:NO_OF_PAYMENTS='10';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:TOTAL_FEE_AMOUNT='16000.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:DISCOUNTED_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:TOTAL_EFF_FEE_AMT='16000.0';
+  
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:PAYMENT_DUE_DT='2022-09-11';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:TOTAL_DUE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[1].ns2:PAYMENT_STATUS='p';
+
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:PAYMENT_DUE_DT='2022-10-11';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:PENALTY_AMOUNT='100.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:TOTAL_DUE_AMOUNT='1700.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[2].ns2:PAYMENT_STATUS='p';
+  	 	
+		
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[3].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[3].ns2:PAYMENT_DUE_DT='2022-11-10';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[3].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[3].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[3].ns2:TOTAL_DUE_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[3].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[3].ns2:PAYMENT_STATUS='p';
+  	 	
+		
+		
+		
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[4].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[4].ns2:PAYMENT_DUE_DT='2022-12-10';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[4].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[4].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[4].ns2:TOTAL_DUE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[4].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[4].ns2:PAYMENT_STATUS='U';
+  	 	
+  	 	
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[5].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[5].ns2:PAYMENT_DUE_DT='2023-01-09';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[5].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[5].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[5].ns2:TOTAL_DUE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[5].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[5].ns2:PAYMENT_STATUS='U';
+  	 	
+  	 	
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[6].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[6].ns2:PAYMENT_DUE_DT='2023-02-08';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[6].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[6].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[6].ns2:TOTAL_DUE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[6].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[6].ns2:PAYMENT_STATUS='U';
+  	 	
+  	 	
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[7].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[7].ns2:PAYMENT_DUE_DT='2023-03-10';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[7].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[7].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[7].ns2:TOTAL_DUE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[7].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[7].ns2:PAYMENT_STATUS='U';
+  	 	
+  	 	
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[8].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[8].ns2:PAYMENT_DUE_DT='2023-04-09';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[8].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[8].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[8].ns2:TOTAL_DUE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[8].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[8].ns2:PAYMENT_STATUS='U';
+  	 	
+  	 	
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[9].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[9].ns2:PAYMENT_DUE_DT='2023-05-09';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[9].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[9].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[9].ns2:TOTAL_DUE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[9].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[9].ns2:PAYMENT_STATUS='U';
+  	 	
+  	 	
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[10].ns2:PAYMENT_TYPE='FEE';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[10].ns2:PAYMENT_DUE_DT='2023-06-08';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[10].ns2:FEE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[10].ns2:PENALTY_AMOUNT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[10].ns2:TOTAL_DUE_AMOUNT='1600.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[10].ns2:DISCOUNTED_AMT='0.0';
+  SET OutputRoot.XMLNSC.env:Envelope.env:Body.ns2:SchoolFeeDetailsResponse.ns2:SchoolFeeDetailsBody.ns2:StudentDetails.ns2:FeePaymentDetails.ns2:PaymentScheduleDetails[10].ns2:PAYMENT_STATUS='U';
+  	 	
+		
+	
+	
+	
+		RETURN TRUE;
+	END;
+END MODULE;
