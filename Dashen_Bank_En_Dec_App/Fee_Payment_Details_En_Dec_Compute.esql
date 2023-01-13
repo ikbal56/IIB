@@ -1,0 +1,32 @@
+
+PATH java_code_en_dec;
+CREATE COMPUTE MODULE Fee_Payment_Details_En_Dec_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE ref REFERENCE TO InputRoot.JSON.Data;
+		DECLARE inp BLOB ASBITSTREAM(InputRoot.JSON.Data.CreateTransactionRequest ENCODING 546 CCSID 1208);
+		DECLARE en_dec CHARACTER CAST(inp AS CHARACTER CCSID 1208);
+		DECLARE key CHARACTER '131';
+        DECLARE Valida CHARACTER FIELDNAME(ref.[2]);
+        DECLARE Valida2 CHARACTER FIELDNAME(ref.[1]);
+        IF CONTAINS(Valida , 'Request') = TRUE then
+      
+        SET Environment.val=encryption_data(en_dec,key);
+        SET OutputRoot.JSON.Data.Mandatory_Fields = InputRoot.JSON.Data.Mandatory_Fields; 
+		SET OutputRoot.JSON.Data.CreateTransactionRequest = Environment.val;
+		
+        ELSEIF CONTAINS(Valida2 ,'Response') = TRUE then
+		
+		SET Environment.Result=decryption_data (InputRoot.JSON.Data.CreateTransactionResponse,key);
+		CREATE LASTCHILD of Environment DOMAIN 'JSON' PARSE(Environment.Result CCSID 1208);
+		SET OutputRoot.JSON.Data.CreateTransactionResponse=Environment.JSON.Data;
+        else 
+        SET OutputRoot.JSON.Data.Response = 'Invalid Tags are used';
+        end if;
+	
+	
+	
+		RETURN TRUE;
+	END;
+END MODULE;
