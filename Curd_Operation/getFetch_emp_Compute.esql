@@ -1,0 +1,16 @@
+
+
+CREATE COMPUTE MODULE getFetch_emp_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE inp REFERENCE TO InputRoot.XMLNSC.EmployeeDetails;
+	DECLARE query CHARACTER ;
+	
+	SET query='Select * from EMP_DETAILS WHERE EMP_ID= ?';
+	SET OutputRoot.JSON.Data.Response=PASSTHRU(query VALUES(inp.EMP_ID));
+	
+	
+		RETURN TRUE;
+	END;
+END MODULE;

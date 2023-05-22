@@ -1,0 +1,28 @@
+
+
+CREATE COMPUTE MODULE putUpdate_emp_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE inpref REFERENCE TO InputRoot.XMLNSC.EmployeeDetails;
+		DECLARE EMP_DETAILS,updatevalue,id,EMP_CITY,EMP_ID,EMP_NAME,Designation,EMP_DESIGNATION CHARACTER;
+		SET updatevalue=inpref.EMP_CITY;
+		SET id=inpref.EMP_ID;
+		SET EMP_NAME=inpref.Name;
+		SET Designation=inpref.EMP_DESIGNATION;
+		
+		
+		
+		UPDATE  Database.EMP_DETAILS AS i SET EMP_CITY=updatevalue, EMP_NAME=EMP_NAME, EMP_DESIGNATION=Designation WHERE i.EMP_ID=id;
+		
+		IF SQLCODE=0 THEN
+			
+			SET  OutputRoot.JSON.Data.Response='Your Details updated Successfully';
+			
+		ELSE
+			SET  OutputRoot.JSON.Data.Error='Something went Wrong';
+		END IF;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

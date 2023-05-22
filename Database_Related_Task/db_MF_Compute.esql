@@ -9,13 +9,13 @@ CREATE COMPUTE MODULE db_MF_Compute
 	DECLARE query CHARACTER;
 	DECLARE query2 CHARACTER;
 	 
-	-- SET query='SELECT TOKEN FROM table1 WHERE ID=?';
+
 	 SET query='SELECT * FROM table1';
 	 SET query2='SELECT * FROM table3';
 	 SET Environment.Result[]=PASSTHRU(query);
 	 SET Environment.Result2[]=PASSTHRU(query2);
 	 
-	 SET s = inp.ID;
+	
 	 DECLARE dbref REFERENCE TO Environment.Result;
 	 DECLARE dbref2 REFERENCE TO Environment.Result2;
 	 DECLARE query3,query4 CHARACTER;
@@ -40,12 +40,8 @@ CREATE COMPUTE MODULE db_MF_Compute
 	 	MOVE dbref NEXTSIBLING REPEAT TYPE NAME;
 	 END WHILE;
 	 
-	 SET OutputRoot.XMLNSC.Result.Name = Environment.data.Name;
-	 
---	 SET OutputRoot.JSON.Data=Environment.Name;
---	 SET query2='SELECT NAME from table3 WHERE TOKEN=?';
---	 SET Environment.Name=PASSTHRU(query2 VALUES(Environment.Result.TOKEN));
---	 SET OutputRoot.JSON.Data.details=Environment.Name;
+	 SET OutputRoot.JSON.Data.Name = Environment.data.Name;
+	
 	 
 		RETURN TRUE;
 	END;
