@@ -1,0 +1,19 @@
+DECLARE ns NAMESPACE 'http://www.example.org/Operation/';
+
+
+CREATE COMPUTE MODULE Add_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		 CALL add();
+		RETURN TRUE;
+	END;
+ 
+	CREATE PROCEDURE add() BEGIN
+		
+   DECLARE inpref REFERENCE TO InputRoot.SOAP.Body.ns:Input_value;
+   
+   SET OutputRoot.SOAP.Body.ns:Output.Result=inpref.num1 + inpref.num2 ;
+
+	END;
+END MODULE;

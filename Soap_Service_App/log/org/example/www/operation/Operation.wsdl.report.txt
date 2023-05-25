@@ -1,0 +1,22 @@
+
+
+Importing file: C:\Independent_Server_IIB\Soap_Service_App\Operation.wsdl
+
+The WSDL import will proceed with bindings OperationSOAP.
+Creating wsdl schema document for file:///C:/Independent_Server_IIB/Soap_Service_App/Operation.wsdl.
+Parsing wsdl binding {http://www.example.org/Operation/}OperationSOAP.
+Parsing wsdl binding input NewOperation.
+Parsing wsdl binding output NewOperation.
+Processing doc style for operation NewOperation.
+Populating WSDL schema Operation.xsd.
+Creating file Operation.xsd in the workspace.
+Creating file Operation_InlineSchema1.xsd in the workspace.
+Copying source WSDL Operation.wsdl to Operation.wsdl.
+
+Elapsed time processing this message definition file: 0.513 seconds
+Number of warnings for this message definition file: 0
+
+
+Number of files processed: 1
+
+
