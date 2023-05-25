@@ -6,5 +6,7 @@
         <ns2:operation name="postInsert_Data" implementation="postInsert_Data.subflow"/>
         <ns2:operation name="putUpdate_emp" implementation="putUpdate_emp.subflow"/>
     </ns2:operations>
-    <ns2:errorHandlers/>
+    <ns2:errorHandlers>
+        <ns2:errorHandler type="CATCH" implementation="Curd_OperationInputCatchHandler.subflow"/>
+    </ns2:errorHandlers>
 </ns2:restapiDescriptor>

@@ -1,0 +1,26 @@
+
+
+CREATE COMPUTE MODULE Curd_OperationInputCatchHandler_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE Error_code INTEGER;
+	DECLARE Error_Text CHARACTER;
+	
+	DECLARE ref REFERENCE TO InputExceptionList.*[1];
+	
+	WHILE ref.Number IS NOT NULL DO
+		
+		SET Error_code=ref.Number;
+		SET Error_Text=ref.Text;
+		
+	SET OutputRoot.JSON.Data.Error_Num=Error_code;
+	SET OutputRoot.JSON.Data.Error_Text=Error_Text;
+	
+	MOVE ref LASTCHILD;
+		
+	END WHILE;
+	
+		RETURN TRUE;
+	END;
+END MODULE;
