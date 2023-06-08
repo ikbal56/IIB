@@ -1,0 +1,21 @@
+BROKER SCHEMA Load_Global_Cache
+
+
+CREATE COMPUTE MODULE load_Cache_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE inpblob BLOB;
+	SET inpblob=ASBITSTREAM(InputRoot.XMLNSC, InputRoot.Properties.Encoding, InputRoot.Properties.CodedCharSetId);
+	CALL loadgbcache('GBMAP',inpblob);
+	SET OutputRoot.JSON.Data.Response='Successfully Loaded';
+	
+	
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE loadgbcache(IN key CHARACTER, IN value BLOB)
+	LANGUAGE JAVA
+	EXTERNAL NAME "com.eidiko.Global_Cache_Class.loadxmltocatch";
+	
+END MODULE;

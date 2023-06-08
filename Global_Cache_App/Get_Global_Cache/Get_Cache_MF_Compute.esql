@@ -1,0 +1,28 @@
+BROKER SCHEMA Get_Global_Cache
+
+
+CREATE COMPUTE MODULE Get_Cache_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE xml BLOB ;
+	SET xml=getgbcache('GBMAP');
+	
+	
+	IF (xml IS NOT NULL OR xml <>'') THEN
+		
+	CREATE LASTCHILD OF OutputRoot DOMAIN 'XMLNSC' NAME 'XMLNSC';
+	CREATE LASTCHILD OF OutputRoot.XMLNSC PARSE(xml  CCSID InputRoot.Properties.CodedCharSetId);
+	ELSE
+	 SET OutputRoot.XMLNSC.Message.Value='Problem getting cache';	
+  END IF;
+	
+	
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE getgbcache(IN key CHARACTER) RETURNS BLOB
+	LANGUAGE JAVA
+	EXTERNAL NAME  "com.eidiko.Global_Cache_Class.getgbcache" ;
+
+END MODULE;
