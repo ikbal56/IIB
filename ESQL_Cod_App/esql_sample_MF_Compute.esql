@@ -1,0 +1,40 @@
+
+
+CREATE COMPUTE MODULE esql_sample_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE inpref REFERENCE TO InputRoot.XMLNSC.EmployeeDetails;
+	DECLARE id INTEGER;
+	DECLARE fieldExists CHARACTER;
+	SET id=inpref.id;
+	--IF id= '937' OR id='939' THEN
+	
+	---validating incoming field exist or not----
+	 SET fieldExists = FIELDNAME(inpref.id);
+	IF fieldExists ='id' THEN
+		
+	CREATE LASTCHILD OF OutputRoot DOMAIN 'JSON';
+	CREATE LASTCHILD OF OutputRoot.JSON NAME 'Data';
+	CREATE LASTCHILD OF OutputRoot.JSON.Data NAME 'EmployeeDetails';
+	DECLARE outref REFERENCE TO OutputRoot.JSON.Data.EmployeeDetails;
+	
+	-------String Manipulation Function-----------
+	SET outref.id=inpref.id;
+	SET outref.length=LENGTH(inpref.id);
+	SET outref.name=SUBSTRING (inpref.name FROM 4 FOR 5);
+	SET outref.Designation=OVERLAY(inpref.Designation PLACING 'IIB DEveloper' FROM 1 FOR 3);
+	SET outref.city=inpref.city;	
+	SET outref.coalesceresult=COALESCE(inpref.Company,inpref.details,'Eidiko System Integrators');
+		
+	ELSE
+		
+		SET OutputRoot=InputRoot;
+		
+		
+	END IF;
+	
+	
+		RETURN TRUE;
+	END;
+END MODULE;
