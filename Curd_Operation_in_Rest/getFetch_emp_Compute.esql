@@ -1,0 +1,38 @@
+
+
+CREATE COMPUTE MODULE getFetch_emp_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+		-- Query parameter------
+		
+		DECLARE URL INTEGER CAST(InputLocalEnvironment.HTTP.Input.QueryString.EMP_ID as INTEGER);
+		DECLARE query CHARACTER;
+		SET query='SELECT * FROM EMP_DETAILS WHERE EMP_ID=?';
+		SET OutputRoot.JSON.Data.Empolyee.Details=PASSTHRU(query VALUES(URL));
+		
+	     ----------------------------------------------------------------------------
+	     
+	     
+	        --- ---Body-----
+	DECLARE inp REFERENCE TO InputRoot.JSON.Data.EmployeeDetails;
+	DECLARE query2 CHARACTER ;
+	
+	SET query='Select * from EMP_DETAILS WHERE EMP_ID= ?';
+	SET OutputRoot.JSON.Data.Response=PASSTHRU(query2 VALUES(inp.EMP_ID));
+	
+	--------------------------------------------------------------------------------
+	
+	
+	
+	
+--	DECLARE inp INTEGER CAST(InputLocalEnvironment.HTTP.Input.Path.EMP_ID AS INTEGER);
+--	
+--	
+--	SET OutputRoot.JSON.Data.Response=PASSTHRU(query VALUES(inp));
+	
+	
+		RETURN TRUE;
+	END;
+END MODULE;

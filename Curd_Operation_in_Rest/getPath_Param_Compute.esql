@@ -1,0 +1,17 @@
+
+
+CREATE COMPUTE MODULE getPath_Param_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	--InputLocalEnvironment.REST.Input.Parameters.pathParam;
+	DECLARE URL INTEGER CAST(InputLocalEnvironment.REST.Input.Parameters.path_Param as INTEGER);
+		DECLARE query CHARACTER;
+		SET query='SELECT * FROM EMP_DETAILS WHERE EMP_ID=?';
+		SET OutputRoot.JSON.Data.Empolyee.Details=PASSTHRU(query VALUES(URL));
+	
+	
+		RETURN TRUE;
+	END;
+
+END MODULE;

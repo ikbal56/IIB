@@ -1,0 +1,31 @@
+
+
+CREATE COMPUTE MODULE postInsert_Data_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE id,name,city,Designation CHARACTER;
+	DECLARE EMP_DETAILS,EMP_ID,EMP_NAME,EMP_DESIGNATION,EMP_CITY CHARACTER;
+	
+	
+	
+	DECLARE inpref REFERENCE TO InputRoot.XMLNSC.EmployeeDetails;
+	
+	SET id=inpref.id;
+	SET name=inpref.name;
+	SET Designation=inpref.Designation;
+	SET city=inpref.city;
+	
+	INSERT INTO Database.EMP_DETAILS (EMP_ID,EMP_NAME,EMP_DESIGNATION,EMP_CITY) VALUES (id,name,Designation,city);
+	
+	IF SQLCODE=0 THEN
+		
+		SET OutputRoot.JSON.Data.Result='Data Inserted Successfully';
+		
+	ELSE
+		SET OutputRoot.JSON.Data.ErrorResponse='Data not Inserted';
+	END IF;
+	
+		RETURN TRUE;
+	END;
+END MODULE;
