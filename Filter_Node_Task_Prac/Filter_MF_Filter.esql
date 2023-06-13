@@ -1,0 +1,20 @@
+
+
+CREATE FILTER MODULE Filter_MF_Filter
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE ref REFERENCE TO Root.XMLNSC.Employee;
+		
+		IF  ref.name='Ikbal' THEN
+		RETURN TRUE;
+			
+		ELSEIF ref.name='Hossain' THEN
+			
+			RETURN UNKNOWN;
+		ELSE
+			RETURN FALSE;  
+		END IF;
+		
+	END;
+
+END MODULE;
