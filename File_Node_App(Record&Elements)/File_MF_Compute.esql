@@ -1,0 +1,22 @@
+
+
+CREATE COMPUTE MODULE File_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE inpref REFERENCE TO InputRoot.DFDL.filenode.record;
+	
+	SET OutputRoot.XMLNSC.Root.Depertment=inpref.Depertment;
+	
+	PROPAGATE TO TERMINAL 'out';
+	
+		SET OutputRoot.XMLNSC.Root.Depertment1=inpref.Depertment_2;
+		SET OutputRoot.XMLNSC.Root.Depertment2=inpref.Depertment_3;
+	
+		PROPAGATE TO TERMINAL 'out1';
+	
+	
+		RETURN FALSE;
+	END;
+
+END MODULE;
