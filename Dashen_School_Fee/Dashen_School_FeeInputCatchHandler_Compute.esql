@@ -1,0 +1,66 @@
+
+
+CREATE COMPUTE MODULE Dashen_School_FeeInputCatchHandler_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE inref REFERENCE TO InputRoot.JSON.Data; 
+		DECLARE temp CHARACTER;
+		 DECLARE ref REFERENCE TO InputExceptionList.*[1];
+		 DECLARE APP_NAME,MSG_FLOW,MSG_ID,PROCESS_ID,CHANNEL_REQUEST,ERROR_DESCRPTION,ERROR_CODE CHARACTER;
+		 DECLARE TIME_STAMP TIMESTAMP;
+		 SET APP_NAME=ApplicationLabel;
+		 SET MSG_FLOW=MessageFlowLabel;
+		 SET TIME_STAMP=CURRENT_TIMESTAMP;
+           
+		 SET MSG_ID=CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS CHARACTER);
+		 SET CHANNEL_REQUEST=InputRoot.JSON.Data.Mandatory_Fields.Servicee_Type;
+		 
+		 WHILE ref.Number is NOT NULL DO
+		
+			SET ERROR_DESCRPTION=ref.Text;
+			SET ERROR_CODE=ref.Number;
+	        SET OutputRoot.JSON.Data.Exception_Details.Text =ERROR_DESCRPTION ;
+	        SET OutputRoot.JSON.Data.Exception_Details.Number =ERROR_CODE;	    
+		
+		MOVE ref LASTCHILD;
+		END WHILE;
+		 
+	--	 SET temp = ref.RecoverableException.RecoverableException;
+--    CASE  	
+       --WHEN tem IS NOT NULL THEN
+--    	While LASTMOVE (ref) DO
+--		IF ref.Number  IS NOT NULL THEN
+--			SET ERROR_DESCRPTION=ref.Text;
+--			SET ERROR_CODE=ref.Number;
+--	        SET OutputRoot.JSON.Data.Exception_Details.Text =ERROR_DESCRPTION ;
+--	        SET OutputRoot.JSON.Data.Exception_Details.Number =ERROR_CODE;	    
+--		END IF;
+--		MOVE ref LASTCHILD;
+--		END WHILE;
+--    	
+--    ELSE
+--    		While LASTMOVE (ref) DO
+--		  IF ref.Text  IS NOT NULL THEN
+--			SET ERROR_DESCRPTION=ref.Text;
+--			SET ERROR_CODE=ref.Number;
+--	        SET OutputRoot.JSON.Data.Exception_Details.Text =ERROR_DESCRPTION ;
+--	        SET OutputRoot.JSON.Data.Exception_Details.Number =ERROR_CODE;	
+--		END IF;
+--		MOVE ref LASTCHILD;
+--		END WHILE;
+ --   END CASE;
+ 
+		CALL Dashen_excep_handling (APP_NAME,MSG_FLOW,MSG_ID,ERROR_CODE,ERROR_DESCRPTION,CHANNEL_REQUEST,TIME_STAMP);
+		
+		
+		
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE Dashen_excep_handling (IN APP_NAME CHARACTER,IN MSG_FLOW CHARACTER,IN MSG_ID CHARACTER,IN ERROR_CODE CHARACTER,IN ERROR_DESCRPTION CHARACTER,IN CHANNEL_REQUEST CHARACTER,IN TIME_STAMP TIMESTAMP)
+	LANGUAGE DATABASE
+	EXTERNAL NAME "DASHEN_EXCEP_PROC" ;
+	
+	
+END MODULE;

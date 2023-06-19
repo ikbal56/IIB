@@ -1,0 +1,114 @@
+
+
+CREATE COMPUTE MODULE postQuerybystudentid_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	
+	
+		DECLARE REf REFERENCE TO InputRoot.JSON.Data.QueryByStudentIdRequest;
+		DECLARE Response CHARACTER '';
+		DECLARE key CHARACTER 131;
+		call java_code_en_dec.decryption_data(InputRoot.JSON.Data.QueryByStudentIdRequest,key) into Response;
+		
+--		DECLARE blobg BLOB ASBITSTREAM(REf.QueryByStudentIdRequest CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+--		DECLARE Inputmsg CHARACTER CAST(blobg as CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);
+		
+		
+	
+		
+		CREATE LASTCHILD of Environment DOMAIN 'JSON' PARSE(Response CCSID 1208);
+		 DECLARE inp REFERENCE TO Environment.JSON.Data;
+	     DECLARE inpref REFERENCE TO Environment.JSON.Data.STUDENT_ID;
+	    
+	    DECLARE val INTEGER;
+	    DECLARE phone INTEGER;
+	    
+	    SET val=LENGTH(inp.STUDENT_ID);
+	    --SET phone=LENGTH(inpref.PhoneNumber);
+	      
+	         IF val = '12' OR  phone='10' THEN
+	      	
+	      	 SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.Attribute)xmlns:sch=sch;
+		 SET OutputRoot.XMLNSC.soapenv:Envelope.(XMLNSC.NamespaceDecl)xmlns:soapenv=soapenv;
+		   
+	     SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Header.(XMLNSC.XmlDeclaration)=NULL;
+	       
+	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:QueryByStudentIdRequest.sch:header.sch:SOURCE=inp.SOURCE;
+	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:QueryByStudentIdRequest.sch:header.sch:UBSCOMP=inp.UBSCOMP;
+	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:QueryByStudentIdRequest.sch:header.sch:USERID=inp.USERID;
+	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:QueryByStudentIdRequest.sch:header.sch:BRANCH=inp.BRANCH;
+	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:QueryByStudentIdRequest.sch:header.sch:SERVICE=inp.SERVICE;
+	       SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:QueryByStudentIdRequest.sch:header.sch:OPERATION=inp.OPERATION;
+	       
+	       	SET OutputRoot.XMLNSC.soapenv:Envelope.soapenv:Body.sch:QueryByStudentIdRequest.sch:QueryByStudentIdBody.sch:STUDENT_ID=inpref.STUDENT_ID;
+	           
+	       
+	       
+	       	   -- channel Request ---
+  	 	  
+  	 	 DECLARE channel_req BLOB ASBITSTREAM(InputRoot.JSON.Data ENCODING 546 CCSID 1208);
+         DECLARE channel  CHARACTER CAST(channel_req AS CHARACTER CCSID 1208);
+        
+        SET Environment.value.Req=channel;
+  	 	 
+  	 	 --- Host Request ---
+  	 	 
+  	 	 DECLARE hr BLOB ASBITSTREAM(OutputRoot.*:XMLNSC.*:Envelope.*:Body ENCODING 546 CCSID 1208);
+  	 	 DECLARE hr1 CHARACTER CAST(hr AS CHARACTER CCSID 1208);
+  	 	 SET Environment.value.req2=hr1;
+  	 	 
+  	 	 
+  	 	   ---- MSG_ID---
+  	   DECLARE ID,MSG_ID CHARACTER;  
+  	   SET ID = CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS CHARACTER);
+	   SET Environment.MSG_ID = ID;
+	
+	
+	                       --- for ip address-----
+	    DECLARE ip CHARACTER InputLocalEnvironment.REST.Input.URI;
+		DECLARE ip_add CHARACTER SUBSTRING(ip AFTER 'http://');
+		DECLARE ip_address CHARACTER SUBSTRING (ip_add BEFORE ':');
+		SET Environment.ip_details=ip_address;
+	                        ----------------------
+	       
+	       
+     
+	       
+--  	 	   DECLARE dasheninp REFERENCE TO InputRoot.JSON.Data.Mandatory_Fields;
+--  	 	   DECLARE value CHARACTER;
+--  	        SET  value=dasheninp.Servicee_Type;   
+--  	       
+--  		 CASE
+--		WHEN value = 'QueryByStudentIdRequest' THEN
+--   
+--   		DECLARE newUrl CHARACTER;
+--  	       
+--  	       DECLARE query  CHARACTER ;
+--  	       SET  query='SELECT BACKEND_URL FROM  dashen_service_list WHERE SERVICE_TYPE=?';
+--		   SET Environment.Result[]=PASSTHRU(query VALUES(value));
+--		   SET newUrl=Environment.Result.BACKEND_URL;
+--		  
+--		   SET OutputLocalEnvironment.Destination.HTTP.RequestURL = newUrl;
+--  	 	ELSE
+--    	SET OutputRoot.JSON.Data.Result='No data Found';
+-- 	 	END CASE;
+	      	
+	         ELSE
+	         	DECLARE I INTEGER 1;
+	         	CREATE FIELD OutputRoot.JSON.Data.SchoolFeeDetailsResponse IDENTITY (JSON.Array);
+	        SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.Item[I].MessageId='STOP0555500';
+	       CREATE FIELD OutputRoot.JSON.Data.SchoolFeeDetailsResponse.Item[I].Error IDENTITY (JSON.Array);
+			SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.Item[I].Error.Item[I].ErrorCode='001';
+			SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.Item[I].Error.Item[I].ErrorDescription='Invalid Student ID';
+			propagate TO TERMINAL 'out1';
+	      	
+	      END IF;
+	      
+		
+	
+	      -- SET OutputLocalEnvironment.Destination.HTTP.RequestURL='http://localhost:7800/bystudentid';
+		
+		RETURN TRUE;
+	END;
+END MODULE;

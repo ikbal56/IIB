@@ -1,0 +1,94 @@
+
+PATH Dashen_Bank_DB_LOGS;
+
+CREATE COMPUTE MODULE postSchoolFeeDetails_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+			                               -- Host_Response--
+		
+		DECLARE host_response BLOB ASBITSTREAM(InputRoot.*:XMLNSC.*:Envelope.*:Body ENCODING 546 CCSID 1208);
+		DECLARE hsp CHARACTER CAST(host_response AS CHARACTER CCSID 1208);
+	                               
+	                               ---------------------------------
+	
+		DECLARE impref REFERENCE TO InputRoot.*:SOAP.*:Body.*:SchoolFeeDetailsResponse.*:SchoolFeeDetails;
+		DECLARE inpref2 REFERENCE TO InputRoot.*:SOAP.*:Body.*:SchoolFeeDetailsResponse.*:SchoolFeeDetails.*:FeePaymentDetails.*:PaymentScheduleDetails;
+		DECLARE I INTEGER 1;
+		CREATE FIELD OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails IDENTITY(JSON.Array)SchoolFeeDetails;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].StudentId=impref.*:STUDENT_ID;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].StudentNumber=impref.*:STUDENT_NUMBER;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].StudentName=impref.*:STUDENT_NAME;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].StudentGrade=impref.*:ST_GRADE;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].StudentSection=impref.*:ST_SECTION;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].PhoneNumber=impref.*:PHONE_NO;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].CampusId=impref.*:CAMPUS_ID;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].InstitutionId=impref.*:INSTITUTION_ID;
+		
+		CREATE FIELD OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails IDENTITY(JSON.Array)FeePaymentDetails;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentReferenceNumber=impref.*:FeePaymentDetails.*:PAYMENT_REF_NO;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentCycle=impref.*:FeePaymentDetails.*:PAYMENT_CYCLE;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].FirstDueDate=impref.*:FeePaymentDetails.*:FIRST_DUE_DT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].NumberOfPayments=impref.*:FeePaymentDetails.*:NO_OF_PAYMENTS;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].TotalFeeAmount=impref.*:FeePaymentDetails.*:TOTAL_FEE_AMOUNT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].DiscountAmount=impref.*:FeePaymentDetails.*:DISCOUNTED_AMOUNT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].TotalEffFeeAmount=impref.*:FeePaymentDetails.*:TOTAL_EFF_FEE_AMT;
+		
+		CREATE FIELD OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails IDENTITY(JSON.Array)PaymentScheduleDetails;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[I].PaymentType=inpref2.*:PAYMENT_TYPE;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[I].PaymentDueDate=inpref2.*:PAYMENT_DUE_DT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[I].FeeAmount=inpref2.*:FEE_AMOUNT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[I].PenaltyAmount=inpref2.*:PENALTY_AMOUNT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[I].TotalDueAmount=inpref2.*:TOTAL_DUE_AMOUNT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[I].DiscountedAmount=inpref2.*:DISCOUNTED_AMT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[I].PaymentStatus=inpref2.*:PAYMENT_STATUS;
+		
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[2].PaymentType=inpref2.*:PAYMENT_TYPE;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[2].PaymentDueDate=inpref2.*:PAYMENT_DUE_DT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[2].FeeAmount=inpref2.*:FEE_AMOUNT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[2].PenaltyAmount=inpref2.*:PENALTY_AMOUNT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[2].Total_Due_Amount=inpref2.*:TOTAL_DUE_AMOUNT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[2].DiscountedAmount=inpref2.*:DISCOUNTED_AMT;
+		SET OutputRoot.JSON.Data.SchoolFeeDetailsResponse.SchoolFeeDetails.Item[I].FeePaymentDetails.Item[I].PaymentScheduleDetails.Item[2].PaymentStatus=inpref2.*:PAYMENT_STATUS;
+		
+	                                           	-----Channel Response--------
+	                                           	
+	               	DECLARE ch_resp BLOB ASBITSTREAM(OutputRoot.JSON.Data ENCODING 546 CCSID 1208);
+	                DECLARE csp CHARACTER CAST (ch_resp AS CHARACTER CCSID 1208);
+	                                           	
+		                                         ---------------------------
+		                                         
+		    
+		             --DB_LOGS--
+		                                                  
+		DECLARE msg_id,ip,channel_req,channel_resp,host_req,host_resp,app_name,msgflow_name CHARACTER;
+		DECLARE time_stamp TIMESTAMP;
+		
+		SET msg_id=Environment.MSG_ID;
+		
+			
+		----------for ip address-----------
+--		DECLARE ip CHARACTER InputLocalEnvironment.Destination.HTTP.RequestURL;
+--		DECLARE ip_add CHARACTER SUBSTRING(ip AFTER 'http://');
+--		DECLARE ip_address CHARACTER SUBSTRING (ip_add BEFORE ':');
+		  -----------------------------------------------
+		
+		SET ip=Environment.ip_details;
+		SET channel_req=Environment.value.Req;
+		SET host_req=Environment.value.req2;
+		SET host_resp=hsp;
+		SET channel_resp=csp;
+		SET app_name=ApplicationLabel;
+		SET msgflow_name=MessageFlowLabel;
+		SET time_stamp=CURRENT_TIMESTAMP;
+		
+		CALL dashen_fee_details(msg_id,ip,channel_req,host_req,host_resp,channel_resp,app_name,msgflow_name,time_stamp);
+		
+		
+		
+		RETURN TRUE;
+	END;
+
+
+END MODULE;

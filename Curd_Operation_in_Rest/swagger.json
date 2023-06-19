@@ -28,7 +28,7 @@
         }, {
           "name" : "EMP_ID",
           "in" : "query",
-          "type" : "integer"
+          "type" : "boolean"
         } ]
       }
     },

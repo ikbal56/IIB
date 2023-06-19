@@ -1,0 +1,24 @@
+PATH java_code_en_dec;
+
+CREATE COMPUTE MODULE postQuerybystudentid_Compute2
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		
+		DECLARE REf BLOB ASBITSTREAM(InputRoot.JSON.Data ENCODING 546 CCSID 1208);
+		DECLARE result CHARACTER CAST(REf AS CHARACTER CCSID 1208);
+		--DECLARE Response CHARACTER '';
+		DECLARE key CHARACTER 131;
+		--call java_code_en_dec.decryption_data (result,key) into Response;
+		
+		SET Environment.Result=encryption_data (result,key);
+		--CREATE LASTCHILD of Environment DOMAIN 'JSON' PARSE(Environment.Result CCSID 1208);
+		SET OutputRoot.JSON.Data.QueryByStudentIdResponse=Environment.Result;
+			
+--		CREATE LASTCHILD of Environment DOMAIN 'JSON' PARSE(Response CCSID 1208);
+--		 DECLARE inp REFERENCE TO Environment.JSON.Data.header;
+--	     DECLARE inpref REFERENCE TO Environment.JSON.Data.QueryByStudentIdBody;
+		
+		RETURN TRUE;
+	END;
+END MODULE;
