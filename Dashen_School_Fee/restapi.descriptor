@@ -15,5 +15,6 @@
     </ns2:operations>
     <ns2:errorHandlers>
         <ns2:errorHandler type="CATCH" implementation="Dashen_School_FeeInputCatchHandler.subflow"/>
+        <ns2:errorHandler type="FAILURE" implementation="Dashen_School_FeeInputFailureHandler.subflow"/>
     </ns2:errorHandlers>
 </ns2:restapiDescriptor>

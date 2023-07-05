@@ -1,0 +1,17 @@
+
+
+CREATE COMPUTE MODULE fixed_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+	
+	DECLARE  inp REFERENCE TO InputRoot.DFDL.fixed_length_file.body;
+	SET OutputRoot.XMLNSC.data.city=inp.city;
+	PROPAGATE TO TERMINAL 'out';
+	SET OutputRoot.XMLNSC.data.city_2=inp.city1;
+	SET OutputRoot.XMLNSC.data.city_3=inp.city3;
+	
+	PROPAGATE TO TERMINAL 'out1';
+		RETURN FALSE;
+	END;
+
+END MODULE;
