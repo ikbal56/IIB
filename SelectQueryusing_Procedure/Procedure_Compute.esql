@@ -1,0 +1,33 @@
+
+
+CREATE COMPUTE MODULE Procedure_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- CALL CopyMessageHeaders();
+		 CALL CopyEntireMessage();
+		RETURN TRUE;
+	END;
+
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		DECLARE inpref REFERENCE TO InputRoot.XMLNSC.Emp;
+		DECLARE id CHARACTER;
+		SET id=inpref.Eid;
+		
+		
+--CALL fetchemp(id,res,Environment.ResultSet1[], OutputRoot.XMLNS.Test.ResultSet2[]);
+CALL fetchemp(id, OutputRoot.XMLNS.Test.ResultSet2[]);
+
+  --Environment.ResultSet1[],
+--DECLARE cursor REFERENCE TO OutputRoot.XMLNS.Test;
+--CALL myProc1(InVar1, cursor.OutVar2, cursor.ResultSet1[], cursor.ResultSet2[]);
+		
+	END;
+	
+--	CREATE PROCEDURE fetchemp (IN EID CHARACTER )
+--	LANGUAGE DATABASE
+--	EXTERNAL NAME "Emp_Result";
+CREATE PROCEDURE fetchemp (IN EID1 CHARACTER) LANGUAGE DATABASE DYNAMIC RESULT SETS 1  EXTERNAL NAME "Emp_Result";
+
+	 
+END MODULE;
