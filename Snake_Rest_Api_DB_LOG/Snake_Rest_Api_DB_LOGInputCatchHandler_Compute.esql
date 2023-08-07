@@ -1,0 +1,54 @@
+
+
+CREATE COMPUTE MODULE Snake_Rest_Api_DB_LOGInputCatchHandler_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE excep_number INTEGER ;
+		DECLARE excep_Name CHARACTER ;
+		DECLARE Bip CHARACTER ;
+		DECLARE app_name CHARACTER;
+		DECLARE msg_flow CHARACTER;
+		DECLARE host_req CHARACTER;
+		DECLARE host_mreq CHARACTER;
+
+
+		DECLARE ref REFERENCE TO InputExceptionList.*[1];
+		DECLARE host_request REFERENCE TO InputLocalEnvironment.HTTP.Input.QueryString;
+		WHILE ref.Number is NOT NULL DO
+
+			SET OutputRoot.JSON.Data.Exception.app_name=ApplicationLabel;
+			SET OutputRoot.JSON.Data.Exception.excep_number= ref.Number;
+			SET OutputRoot.JSON.Data.Exception.excep_Name= ref.Text;
+			SET OutputRoot.JSON.Data.Exception.Bip= ref.Catalog;
+			SET OutputRoot.JSON.Data.Exception.host_req=host_request.Name;
+			SET OutputRoot.JSON.Data.Exception.host_req2=host_request.id;
+			SET OutputRoot.JSON.Data.Exception.host_req3=host_request.city;
+
+			SET app_name=ApplicationLabel;
+			SET excep_number= ref.Number;
+			SET excep_Name= ref.Text;
+			SET Bip= ref.Catalog;
+			SET msg_flow=MessageFlowLabel;
+
+
+--			DECLARE var BLOB ASBITSTREAM(host_request CCSID 1208);
+--			DECLARE var1 CHARACTER CAST(var AS CHARACTER CCSID 1208);
+
+			SET host_mreq=host_request;
+
+			MOVE ref LASTCHILD;
+		END WHILE;
+
+		CALL excep_procedure (app_name,excep_number,excep_Name,Bip,CURRENT_TIMESTAMP,msg_flow);
+		
+		
+		RETURN TRUE;
+	END;
+
+	
+END MODULE;
+
+CREATE PROCEDURE excep_procedure (IN app_name CHARACTER,IN excep_number INTEGER,IN exce_name CHARACTER,IN bip CHARACTER,IN time_stamp TIMESTAMP,IN MSGFLOW_NAME CHARACTER)
+LANGUAGE DATABASE
+EXTERNAL NAME "DB_LOG_PROCEDURE" ;

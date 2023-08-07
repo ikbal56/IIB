@@ -1,0 +1,68 @@
+
+
+
+
+CREATE COMPUTE MODULE getSnakedetails_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN		
+		
+
+
+        DECLARE app_name CHARACTER;
+		DECLARE query CHARACTER;
+		DECLARE INREF REFERENCE TO InputLocalEnvironment.HTTP.Input.QueryString;
+		DECLARE req_inf CHARACTER InputRoot.HTTPInputHeader."X-Query-String";
+		SET query = 'SELECT * FROM GAME_DETAILS WHERE GAME_LENGTH =?';
+		SET OutputRoot.XMLNSC.record.DATA = PASSTHRU(query VALUES(INREF.GAME_LENGTH));
+
+		DECLARE msg_id,msg_des,host_req,host_resp,transaction_status,channel_req,channel_resp CHARACTER;
+
+		DECLARE timestamp_req,timestamp_resp TIMESTAMP;		
+		
+		
+
+        SET app_name=ApplicationLabel;
+		SET msg_des = INREF.GAME_LENGTH;	
+
+
+		SET msg_id = CAST(InputLocalEnvironment.Destination.HTTP.RequestIdentifier AS CHARACTER);	
+		
+		
+
+
+		SET channel_req = CAST(ASBITSTREAM(INREF CCSID InputRoot.Properties.CodedCharSetId) AS CHARACTER CCSID InputRoot.Properties.CodedCharSetId ENCODING InputRoot.Properties.Encoding);	    
+
+
+		SET timestamp_req = CURRENT_TIMESTAMP;   
+	        	
+
+
+		SET channel_resp = CAST(ASBITSTREAM(OutputRoot.XMLNSC) AS CHARACTER CCSID 1208);
+
+		SET transaction_status = channel_resp;
+
+		IF transaction_status IS NULL THEN
+
+			SET transaction_status = 'FAILURE';
+
+			SET timestamp_resp = CURRENT_TIMESTAMP;
+
+		ELSE
+
+			SET transaction_status = 'SUCESS';
+
+			SET timestamp_resp = CURRENT_TIMESTAMP;
+
+		END IF;	 
+
+
+		CALL db_proc(msg_id,msg_des,host_req,host_resp,timestamp_req,timestamp_resp,transaction_status,req_inf,channel_resp,app_name);
+		RETURN TRUE;
+	END;
+
+
+END MODULE;
+
+CREATE PROCEDURE db_proc (IN MSG_ID CHARACTER,IN MSG_DES CHARACTER,IN HOST_REQ CHARACTER,IN HOST_RESP CHARACTER,IN REQ_TIMESTAMP TIMESTAMP,IN RESP_TIMESTAMP TIMESTAMP,IN TRANSACTION_STATUS CHARACTER,IN CHANNEL_REQ CHARACTER,IN CHANNEL_RESP CHARACTER,IN app_name CHARACTER)
+LANGUAGE DATABASE
+EXTERNAL NAME "DB_LOG_PROJ" ;

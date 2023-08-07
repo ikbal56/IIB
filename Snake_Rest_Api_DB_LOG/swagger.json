@@ -1,0 +1,41 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "Snake_Rest_Api_DB_LOG",
+    "version" : "1.0.0",
+    "description" : "Snake_Rest_Api_DB_LOG"
+  },
+  "paths" : {
+    "/finddata" : {
+      "get" : {
+        "operationId" : "getFinddata",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Retrieve finddata"
+      }
+    },
+    "/snakedetails" : {
+      "get" : {
+        "operationId" : "getSnakedetails",
+        "responses" : {
+          "200" : {
+            "description" : "The operation was successful.",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        },
+        "produces" : [ "application/json" ],
+        "description" : "Retrieve snakedetails"
+      }
+    }
+  },
+  "basePath" : "/snake_rest_api_db_log/v1"
+}
